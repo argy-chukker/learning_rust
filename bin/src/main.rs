@@ -14,7 +14,7 @@ fn report_euler_answers() -> () {
     println!("The answer to problem 2 is: {}", answer_2);    
 
     // By brute force I know 1471 is a prime divisor.
-    let answer_3 = euler_problems::problem_3_solver((600851475143_f64 / 1471.0) as u32);
+    let answer_3 = euler_problems::problem_3_solver(600851475143_f64);
     println!("The answer to problem 3 is: {:?}", answer_3) ;    
 }
  
