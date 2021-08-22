@@ -80,3 +80,20 @@ pub fn factorize(n : u32) -> Vec<u32> {
     if result == [] {result.push(rest);};
     result
 }
+
+pub fn is_palindrome(n : u32) -> bool {
+    let ciphres = (n as f64).log10() as u32 + 1;
+
+    let mut  result = true;
+    for i in 0..(ciphres/2) {
+	let l_mod = 10_u32.pow(i + 1) as u32;
+	let u_mod = 10_u32.pow(ciphres - i) as u32;
+        let r_side = (n % l_mod) / (l_mod / 10);
+  	let l_side =  (n % u_mod) / (u_mod / 10);
+	if l_side != r_side {
+	    result = false;
+	    break;};
+    };
+    
+    result
+}
