@@ -14,10 +14,13 @@ fn report_euler_answers() -> () {
     println!("The answer to problem 2 is: {}", answer_2);    
 
     let answer_3 = euler_problems::problem_3_solver(600851475143_f64);
-    println!("The answer to problem 3 is: {:?}", answer_3) ;    
+    println!("The answer to problem 3 is: {:?}", answer_3);    
 
     let answer_4 = euler_problems::problem_4_solver(2, 3);
-    println!("The answer to problem 4 is: {:?}", answer_4) ;    
+    println!("The answer to problem 4 is: {:?}", answer_4);    
+
+    let answer_5 = euler_problems::problem_5_solver(20);
+    println!("The answer to problem 5 is: {:?}", answer_5);    
 }
  
  

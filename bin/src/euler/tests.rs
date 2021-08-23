@@ -20,3 +20,9 @@ fn test_problem_4_solver() {
     assert_eq!(attempt, 9009);
 }
 
+#[test]
+fn test_problem_5_solver() {
+    let attempt = euler_problems::problem_5_solver(10);
+    assert_eq!(attempt, 2520);
+}
+
