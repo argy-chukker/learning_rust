@@ -109,3 +109,7 @@ pub fn nth_prime(n: u32) -> u32 {
 
     candidates[n as usize - 1]
 }
+
+pub fn is_integer(n : f32) -> bool {
+    n.floor() == n
+}
