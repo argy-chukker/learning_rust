@@ -45,8 +45,14 @@ fn test_problem_8_solver() {
 }
 
 #[test]
-fn test_problem_10solver() {
+fn test_problem_10_solver() {
     let attempt = euler_problems::problem_10_solver(10);
     assert_eq!(attempt, 17);
+}
+
+#[test]
+fn test_problem_12_solver() {
+    let attempt = euler_problems::problem_12_solver(5);
+    assert_eq!(attempt, 28);
 }
 

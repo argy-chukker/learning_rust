@@ -1,4 +1,5 @@
 use std::convert::TryInto;
+use itertools::Itertools;
 
 pub fn multiples_under(multiples : Vec<u32>, upto : u32) -> Vec<u32> {
 
@@ -42,6 +43,40 @@ impl FibonacciSequence {
 	next
     }
 }
+
+pub struct TriangularSequence {
+    last : u32,
+    cumsum : u32,
+}
+
+impl TriangularSequence {
+
+    pub fn new_triangular() -> TriangularSequence {
+	TriangularSequence{last : 0, cumsum : 0}
+    }
+    
+    pub fn next(&mut self) -> u32 {
+	self.last += 1;
+	self.cumsum += self.last;
+
+	self.cumsum
+    }
+}
+
+pub fn divisors(n : u64) -> Vec<u64> {
+    let top = (n as f64 / 2.0).ceil() as u64;
+
+    let mut divisors : Vec<u64> = Vec::new();
+
+    for i in 1..top {
+	if n % i == 0 {
+	    divisors.push(i);
+	    divisors.push(n / i);
+	};
+    };
+    divisors.into_iter().unique().collect()
+}
+
 
 pub fn primes_below(n : u32) -> Vec<u32> {
     let top = (n as f64).sqrt() as usize + 1;
