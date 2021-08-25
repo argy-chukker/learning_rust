@@ -97,3 +97,15 @@ pub fn is_palindrome(n : u32) -> bool {
     
     result
 }
+
+pub fn nth_prime(n: u32) -> u32 {
+    if n <= 6 {
+    return [2 , 3, 5, 7, 11, 13][n as usize-1];
+};
+    let n_float = n as f64;
+    let bound = (n_float * (n_float.ln() + n_float.ln().ln())) as u32;
+
+    let candidates = primes_below(bound);
+
+    candidates[n as usize - 1]
+}
