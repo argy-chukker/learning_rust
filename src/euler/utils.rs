@@ -148,3 +148,24 @@ pub fn nth_prime(n: u32) -> u32 {
 pub fn is_integer(n : f32) -> bool {
     n.floor() == n
 }
+
+pub fn divisors_n(n : u64) -> u64 {
+    let primes_below = primes_below(n as u32);
+
+    let mut rest = n;
+    let mut i = 0;
+    let mut count = 1;
+    
+    loop {
+	let current_prime = primes_below[i] as u64;	
+        let mut inner_count = 1;
+	while rest % current_prime == 0 {
+	    rest /= current_prime;
+	    inner_count += 1;
+	};
+	i += 1;
+	count *= inner_count;
+	if rest == 1 {break;};
+    }
+    count
+}
