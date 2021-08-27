@@ -1,5 +1,6 @@
 use std::convert::TryInto;
 use itertools::Itertools;
+use std::collections::HashMap;
 
 pub fn multiples_under(multiples : Vec<u32>, upto : u32) -> Vec<u32> {
 
@@ -169,3 +170,29 @@ pub fn divisors_n(n : u64) -> u64 {
     }
     count
 }
+
+pub struct CollatzSequence {
+    pub known_sequences : HashMap<u64, Vec<u64>>,
+}
+
+impl CollatzSequence {
+    pub fn get_seq(&mut self, n : u64) -> Vec<u64> {
+	if n == 1 {return vec![1]};
+	let next_step = if n % 2 == 0 {n / 2} else {3*n + 1};
+
+	if !self.known_sequences.contains_key(&n) {
+	    let mut new_sequence = vec![n];
+	    new_sequence.append(&mut self.get_seq(next_step));
+	    self.known_sequences.insert(
+		n, new_sequence
+	    );
+	}
+
+	self.known_sequences.get(&n).unwrap().to_vec()
+    }
+
+    pub fn new_seq() -> CollatzSequence {
+	CollatzSequence{known_sequences : HashMap::new()}
+    }
+}
+
