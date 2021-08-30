@@ -7,7 +7,7 @@ fn main() {
 }
 
 fn report_euler_answers() -> () {
-        
+    
     let answer_1 = euler_problems::problem_1_solver(vec![3,5], 1000);
     println!("The answer to problem 1 is: {}", answer_1);
 
@@ -55,6 +55,9 @@ fn report_euler_answers() -> () {
 
     let answer_16 = euler_problems::problem_16_solver(1000);
     println!("The answer to problem 16 is: {:?}", answer_16);
+
+    let answer_17 = euler_problems::problem_17_solver(1000);
+    println!("The answer to problem 17 is: {:?}", answer_17);
 }
  
  
