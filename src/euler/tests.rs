@@ -74,3 +74,18 @@ fn test_problem_17_solver() {
     assert_eq!(attempt, 19);
 }
 
+#[test]
+fn test_problem_18_solver() {
+    let attempt = euler_problems::problem_18_solver(
+	Some(
+	    vec![
+		vec![3],
+		vec![7,4],
+		vec![2,4,6],
+		vec![8,5,9,3]
+	    ]
+	)
+    );
+    assert_eq!(attempt, 23);
+}
+
