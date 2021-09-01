@@ -62,6 +62,9 @@ fn report_euler_answers() -> () {
     let answer_18 = euler_problems::problem_18_solver(None);
     println!("The answer to problem 18 is: {:?}", answer_18);
 
+    let answer_19 = euler_problems::problem_19_solver(1901, 2000, None, None);
+    println!("The answer to problem 19 is: {:?}", answer_19);
+
     let answer_20 = euler_problems::problem_20_solver(100);
     println!("The answer to problem 20 is: {:?}", answer_20);
 
