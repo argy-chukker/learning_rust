@@ -196,3 +196,6 @@ impl CollatzSequence {
     }
 }
 
+pub fn digits<T : std::fmt::Display>(n : T) -> Vec<u32> {
+    n.to_string().chars().map(|d| d.to_digit(10).unwrap()).collect()
+}
