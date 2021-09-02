@@ -65,17 +65,23 @@ impl TriangularSequence {
 }
 
 pub fn divisors(n : u64) -> Vec<u64> {
-    let top = (n as f64 / 2.0).ceil() as u64;
+    if n == 1 {
+	vec![1]
+    } else if n == 2 {
+	vec![1,2]
+    } else {
+	let top = (n as f64 / 2.0).ceil() as u64;
 
-    let mut divisors : Vec<u64> = Vec::new();
+	let mut divisors : Vec<u64> = Vec::new();
 
-    for i in 1..top {
-	if n % i == 0 {
-	    divisors.push(i);
-	    divisors.push(n / i);
+	for i in 1..top {
+	    if n % i == 0 {
+		divisors.push(i);
+		divisors.push(n / i);
+	    };
 	};
-    };
-    divisors.into_iter().unique().collect()
+	divisors.into_iter().unique().collect()
+    }
 }
 
 
@@ -199,3 +205,10 @@ impl CollatzSequence {
 pub fn digits<T : std::fmt::Display>(n : T) -> Vec<u32> {
     n.to_string().chars().map(|d| d.to_digit(10).unwrap()).collect()
 }
+
+pub fn is_abundant(n : u64) -> bool {
+    divisors(n).iter().sum::<u64>() - n > n
+}
+
+
+    
