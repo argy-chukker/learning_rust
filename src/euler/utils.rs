@@ -1,3 +1,4 @@
+use num_bigint::{BigUint, ToBigUint};
 use std::convert::TryInto;
 use itertools::Itertools;
 use std::collections::HashMap;
@@ -26,7 +27,7 @@ pub fn is_even(number : u32) -> bool {
 }
 
 pub struct FibonacciSequence {
-    last_two : [u32; 2],
+    last_two : [u128; 2],
 }
 
 impl FibonacciSequence {
@@ -35,7 +36,7 @@ impl FibonacciSequence {
 	FibonacciSequence{last_two : [0,1]}
     }
     
-    pub fn next(&mut self) -> u32 {
+    pub fn next(&mut self) -> u128 {
 	let next = self.last_two.iter().sum();
 
 	self.last_two[1] = self.last_two[0];
@@ -210,5 +211,23 @@ pub fn is_abundant(n : u64) -> bool {
     divisors(n).iter().sum::<u64>() - n > n
 }
 
+pub struct BigFibonacciSequence {
+    last_two : [BigUint; 2],
+}
 
+impl BigFibonacciSequence {
+
+    pub fn new_big_fibonacci() -> BigFibonacciSequence {
+	BigFibonacciSequence{last_two : ["0".parse::<BigUint>().unwrap(),"1".parse::<BigUint>().unwrap()]}
+    }
     
+    pub fn next(&mut self) -> BigUint {
+	let next : BigUint = self.last_two.iter().sum();
+
+	self.last_two[1] = self.last_two[0].clone();
+	self.last_two[0] = next.clone();
+	
+	next
+    }
+}
+
