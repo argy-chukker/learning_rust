@@ -100,3 +100,15 @@ fn hint_test_problem_25_solver() {
     let attempt = euler_problems::problem_25_solver(2);
     assert_eq!(attempt, 12);
 }
+
+#[test]
+fn hint_test_problem_26_solver() {
+    let attempt = euler_problems::problem_26_solver(10_u32);
+    assert_eq!(attempt, 7);
+}
+
+#[test]
+fn hint_test_problem_28_solver() {
+    let attempt = euler_problems::problem_28_solver::<u32>(5);
+    assert_eq!(attempt, 101);
+}
