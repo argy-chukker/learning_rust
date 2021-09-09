@@ -1,5 +1,5 @@
-use num_bigint::{BigUint, ToBigUint};
-use std::convert::TryInto;
+use num_bigint::BigUint;
+use num::{NumCast, traits::Unsigned};
 use itertools::Itertools;
 use std::collections::HashMap;
 
@@ -205,6 +205,14 @@ impl CollatzSequence {
 
 pub fn digits<T : std::fmt::Display>(n : T) -> Vec<u32> {
     n.to_string().chars().map(|d| d.to_digit(10).unwrap()).collect()
+}
+
+pub fn digits_to_n<T: Unsigned +NumCast>(digits : Vec<u32>) -> T {
+    let mut n = 0;
+    for j in  0..digits.len() {
+	n += digits[j] * 10_u32.pow((digits.len() - j - 1) as u32)
+    };
+    NumCast::from(n).unwrap()
 }
 
 pub fn is_abundant(n : u64) -> bool {
