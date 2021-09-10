@@ -86,42 +86,84 @@ pub fn divisors(n : u64) -> Vec<u64> {
 }
 
 
-pub fn primes_below(n : u32) -> Vec<u32> {
-    let top = (n as f64).sqrt() as usize + 1;
-    
-    let mut candidates : Vec<u32> = (2..n+1).collect();
+pub fn primes_below<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd>(n : T) -> Vec<T> {
 
+    let top : f64 = NumCast::from(n).unwrap();
+    let top : usize = top.sqrt() as usize + 1;
+
+    let max_candidate : u128 = NumCast::from(n).unwrap();
+    let candidates_u128 : Vec<u128> = (2_u128..max_candidate+1_u128).collect();
+    let mut candidates : Vec<T> = Vec::new();
+
+    for c in candidates_u128 {
+	candidates.push(NumCast::from(c).unwrap())
+    }
+    
     for i in 2..top {
-	if candidates[i-2] > 0 {
-	    let max_j = n as usize / i +1 ;
+	if candidates[i-2] > NumCast::from(0).unwrap() {
+	    let mut max_j : usize = NumCast::from(n).unwrap();
+	    max_j /= i;
+	    max_j += 1 ;
 	    for j in i..max_j {
-	 	candidates[i*j-2] = 0;
+	 	candidates[i*j-2] = NumCast::from(0).unwrap();
 	     }
 	 }
     }
 
-    let mut result : Vec<u32> = Vec::new();
+    let mut result : Vec<T> = Vec::new();
     for c in candidates {
-	if c > 0 {result.push(c)}
+	if c > NumCast::from(0).unwrap() {result.push(c)}
     }
     result
 }
 
-pub fn factorize(n : u32) -> Vec<u32> {
+pub fn factorize<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd>(n : T) -> Vec<T> {
     let candidates = primes_below(n);
-    let mut result : Vec<u32> = Vec::new();
+    let mut result : Vec<T> = Vec::new();
 
     let mut rest = n;
     
     for c in &candidates {
-	if rest % c == 0
+	if rest % *c == NumCast::from(0).unwrap()
 	{
 	    result.push(*c);
-	    while rest % c == 0 {rest /= c;};
+	    while rest % *c == NumCast::from(0).unwrap() {rest = rest /  *c;};
 	};
     };
     if result == [] {result.push(rest);};
     result
+}
+
+pub fn simplify_fraction<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd + std::fmt::Debug>(num : T, dem : T) -> (T, T) {
+
+    let d_factors : Vec<T> = factorize(NumCast::from(dem).unwrap());
+    let n_factors : Vec<T> = factorize(NumCast::from(num).unwrap());
+
+
+    let mut res_num : T;
+    let mut res_den : T;
+    
+    if d_factors == n_factors 	{
+	if num > dem {
+	    res_num = num / dem;
+	    res_den = NumCast::from(1).unwrap();
+	} else {
+	    res_den = dem / num;
+	    res_num = NumCast::from(1).unwrap();
+	}; 
+
+
+    } else {
+        let mut new_den = d_factors.clone();
+        let mut new_num = n_factors.clone();
+	new_den.retain(|f| ! n_factors.contains(&f));
+	res_den = Iterator::reduce(new_den.into_iter(), |x,y| x * y).unwrap();
+
+	new_num.retain(|f| ! d_factors.contains(&f));
+	res_num = Iterator::reduce(new_num.into_iter(), |x,y| x * y).unwrap();
+    };
+
+    (res_num, res_den)
 }
 
 pub fn is_palindrome(n : u32) -> bool {
@@ -239,3 +281,11 @@ impl BigFibonacciSequence {
     }
 }
 
+pub fn factorial<T : NumCast + Unsigned + std::cmp::PartialEq + Copy> (n : T) -> T {
+
+    if n == NumCast::from(1).unwrap() {
+	NumCast::from(1).unwrap()
+    } else {
+	n * factorial(n - NumCast::from(1).unwrap())
+    }
+}
