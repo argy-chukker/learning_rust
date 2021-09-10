@@ -140,8 +140,8 @@ pub fn simplify_fraction<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd + 
     let n_factors : Vec<T> = factorize(NumCast::from(num).unwrap());
 
 
-    let mut res_num : T;
-    let mut res_den : T;
+    let res_num : T;
+    let  res_den : T;
     
     if d_factors == n_factors 	{
 	if num > dem {
