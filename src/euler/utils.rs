@@ -283,7 +283,9 @@ impl BigFibonacciSequence {
 
 pub fn factorial<T : NumCast + Unsigned + std::cmp::PartialEq + Copy> (n : T) -> T {
 
-    if n == NumCast::from(1).unwrap() {
+    if n == NumCast::from(0).unwrap() {
+	NumCast::from(1).unwrap()
+    } else if n == NumCast::from(1).unwrap() {
 	NumCast::from(1).unwrap()
     } else {
 	n * factorial(n - NumCast::from(1).unwrap())
