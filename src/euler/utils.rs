@@ -166,13 +166,13 @@ pub fn simplify_fraction<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd + 
     (res_num, res_den)
 }
 
-pub fn is_palindrome(n : u32) -> bool {
-    let ciphres = (n as f64).log10() as u32 + 1;
+pub fn is_palindrome(n : u128) -> bool {
+    let ciphres = (n as f64).log10() as u128 + 1;
 
     let mut  result = true;
     for i in 0..(ciphres/2) {
-	let l_mod = 10_u32.pow(i + 1) as u32;
-	let u_mod = 10_u32.pow(ciphres - i) as u32;
+	let l_mod = 10_u128.pow((i + 1) as u32);
+	let u_mod = 10_u128.pow((ciphres - i) as u32);
         let r_side = (n % l_mod) / (l_mod / 10);
   	let l_side =  (n % u_mod) / (u_mod / 10);
 	if l_side != r_side {
@@ -250,11 +250,11 @@ pub fn digits<T : std::fmt::Display>(n : T) -> Vec<u32> {
 }
 
 pub fn digits_to_n<T: Unsigned +NumCast>(digits : Vec<u32>) -> T {
-    let mut n = 0;
+    let mut n : T = NumCast::from(0).unwrap();
     for j in  0..digits.len() {
-	n += digits[j] * 10_u32.pow((digits.len() - j - 1) as u32)
+	n = n + NumCast::from((digits[j] as u128) * 10_u128.pow((digits.len() - j - 1) as u32)).unwrap();
     };
-    NumCast::from(n).unwrap()
+    n
 }
 
 pub fn is_abundant(n : u64) -> bool {
@@ -290,4 +290,19 @@ pub fn factorial<T : NumCast + Unsigned + std::cmp::PartialEq + Copy> (n : T) ->
     } else {
 	n * factorial(n - NumCast::from(1).unwrap())
     }
+}
+
+pub fn binary_representation<T : Unsigned + Copy + NumCast + std::cmp::PartialOrd + ToString + std::fmt::Debug>(n : T) -> String {
+
+    let mut digits = Vec::<u32>::new();
+    let mut res : T = n;
+
+    let t_0 = NumCast::from(0).unwrap();
+    while res > t_0 {
+
+	let t_2 = NumCast::from(2).unwrap();
+	digits.push(NumCast::from(res % t_2).unwrap());
+	res = res / t_2;
+    };
+    digits_to_n::<T>(digits.into_iter().rev().collect()).to_string()
 }
