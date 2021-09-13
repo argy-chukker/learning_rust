@@ -306,3 +306,17 @@ pub fn binary_representation<T : Unsigned + Copy + NumCast + std::cmp::PartialOr
     };
     digits_to_n::<T>(digits.into_iter().rev().collect()).to_string()
 }
+
+
+pub fn is_pandigital<T: Unsigned + std::fmt::Display> (n : T) -> bool {
+
+    let digs = digits(n);
+    let mut is_pan = true;
+    for i in 1..digs.len() + 1 {
+	if !digs.contains(&(i as u32)) {
+	    is_pan = false;
+	    break;
+	};
+    };
+    is_pan
+}
