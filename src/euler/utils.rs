@@ -320,3 +320,26 @@ pub fn is_pandigital<T: Unsigned + std::fmt::Display> (n : T) -> bool {
     };
     is_pan
 }
+
+pub struct ChampernowneConstant{
+    current_n : u128,
+    current_digits : Vec<u32>
+}
+
+impl ChampernowneConstant {
+
+    pub fn new_champernowne() -> ChampernowneConstant {
+	ChampernowneConstant{current_n : 1, current_digits : vec![1]}
+    }
+
+    pub fn next_digit(&mut self) -> u32 {
+	let next_d = self.current_digits.pop().unwrap();
+
+	if self.current_digits.is_empty() {
+	    self.current_n += 1;
+	    self.current_digits = digits(self.current_n).into_iter().rev().collect();
+	};
+
+	next_d
+    }
+}
