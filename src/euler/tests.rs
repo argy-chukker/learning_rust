@@ -136,3 +136,12 @@ fn hint_test_problem_40_solver() {
     let attempt = euler_problems::problem_40_solver(vec![12]);
     assert_eq!(attempt, 1);
 }
+
+#[test]
+fn hint_test_problem_50_solver() {
+    let attempt = euler_problems::problem_50_solver(100);
+    assert_eq!(attempt, 41);
+
+    let attempt = euler_problems::problem_50_solver(1000);
+    assert_eq!(attempt, 953);
+}
