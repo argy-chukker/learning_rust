@@ -1,7 +1,8 @@
 use num_bigint::BigUint;
 use num::{NumCast, traits::Unsigned};
 use itertools::Itertools;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
+use std::iter::FromIterator;
 
 pub fn multiples_under(multiples : Vec<u32>, upto : u32) -> Vec<u32> {
 
@@ -326,6 +327,16 @@ pub struct ChampernowneConstant{
     current_digits : Vec<u32>
 }
 
+pub fn is_permutation<T : Clone + std::cmp::PartialEq + std::cmp::Ord>(a : Vec<T>, b : Vec<T>) -> bool {
+
+    let mut s_a = a.clone();
+    s_a.sort();
+    let mut s_b = b.clone();
+    s_b.sort();
+
+    s_a == s_b
+}
+
 impl ChampernowneConstant {
 
     pub fn new_champernowne() -> ChampernowneConstant {
@@ -341,5 +352,27 @@ impl ChampernowneConstant {
 	};
 
 	next_d
+    }
+}
+
+
+pub struct TriangularNumbers<T : Unsigned> {
+    seen : HashMap<T,T>
+}
+
+
+impl<T : Unsigned + num::NumCast + Eq + std::hash::Hash> TriangularNumbers<T> {
+    pub fn new_triangulars() -> TriangularNumbers<T> {
+	TriangularNumbers{seen: HashMap::<T, T>::new()}
+    }
+
+    pub fn triangular(&mut self, n : T) -> T {
+	if self.seen.contains(&n) {
+	    *self.seen.get(&n).unwrap()
+	} else {
+	    let result = n*(n+NumCast::from(1).unwrap())/NumCast::from(2).unwrap();
+	    self.seen.insert(n, result);
+	    result
+	}
     }
 }
