@@ -356,21 +356,34 @@ impl ChampernowneConstant {
 }
 
 
-pub struct TriangularNumbers<T : Unsigned> {
-    seen : HashMap<T,T>
+pub enum GeometricNumber {Triangular, Pentagonal, Hexagonal}
+
+pub struct GeometricalNumbers<T> {
+    seen : HashMap<T,T>,
+    shape : GeometricNumber
 }
 
 
-impl<T : Unsigned + num::NumCast + Eq + std::hash::Hash> TriangularNumbers<T> {
-    pub fn new_triangulars() -> TriangularNumbers<T> {
-	TriangularNumbers{seen: HashMap::<T, T>::new()}
+impl<T> GeometricalNumbers<T>
+where T : Unsigned + num::NumCast + Eq + std::hash::Hash + Copy
+{
+    pub fn new_geometrical(shape : GeometricNumber) -> GeometricalNumbers<T> {
+	GeometricalNumbers{seen: HashMap::<T, T>::new(), shape : shape}
     }
 
-    pub fn triangular(&mut self, n : T) -> T {
-	if self.seen.contains(&n) {
+    pub fn get_number(&mut self, n : T) -> T {
+	if self.seen.contains_key(&n) {
 	    *self.seen.get(&n).unwrap()
 	} else {
-	    let result = n*(n+NumCast::from(1).unwrap())/NumCast::from(2).unwrap();
+	    let t_1 : T = NumCast::from(1).unwrap();
+	    let t_2 : T = NumCast::from(2).unwrap();
+	    let t_3 : T = NumCast::from(3).unwrap();
+	    let result =
+		match self.shape {
+		    GeometricNumber::Triangular => n*(n+t_1)/t_2,
+		    GeometricNumber::Pentagonal => n*(t_3*n-t_1)/t_2,
+		    GeometricNumber::Hexagonal => n*(t_2*n-t_1)
+		};
 	    self.seen.insert(n, result);
 	    result
 	}
