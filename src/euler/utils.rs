@@ -1,8 +1,7 @@
 use num_bigint::BigUint;
 use num::{NumCast, traits::Unsigned};
 use itertools::Itertools;
-use std::collections::{HashMap, HashSet};
-use std::iter::FromIterator;
+use std::collections::HashMap;
 
 pub fn multiples_under(multiples : Vec<u32>, upto : u32) -> Vec<u32> {
 
