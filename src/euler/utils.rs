@@ -388,3 +388,11 @@ where T : Unsigned + num::NumCast + Eq + std::hash::Hash + Copy
 	}
     }
 }
+
+pub fn ascii_score(ascii : &char) -> u32 {
+    *ascii as u32 - 64
+}
+
+pub fn word_score(word : String) -> u32 {
+    word.chars().map(|c| ascii_score(&c)).sum()
+}
