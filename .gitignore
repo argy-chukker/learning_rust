@@ -10,4 +10,7 @@ Cargo.lock
 **/*.rs.bk
 
 # To comply with Euler project policies
+/src/euler/*.bkp
 
+/src/euler/euler_problems.rs*
+/src/euler/test_answers.rs*
