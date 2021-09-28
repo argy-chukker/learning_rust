@@ -1,4 +1,4 @@
-use num_bigint::BigUint;
+use num_bigint::{BigUint, ToBigUint};
 use num::{NumCast, traits::Unsigned};
 use itertools::Itertools;
 use std::collections::HashMap;
@@ -132,6 +132,10 @@ pub fn factorize<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd>(n : T) ->
     };
     if result == [] {result.push(rest);};
     result
+}
+
+pub fn is_prime<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd>(n : T) -> bool {
+    n == factorize(n)[0]
 }
 
 pub fn simplify_fraction<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd + std::fmt::Debug>(num : T, dem : T) -> (T, T) {
@@ -396,3 +400,19 @@ pub fn ascii_score(ascii : &char) -> u32 {
 pub fn word_score(word : String) -> u32 {
     word.chars().map(|c| ascii_score(&c)).sum()
 }
+
+pub fn continuous_fraction_approx<F>(level : u32, p_vals : F, base : BigUint) -> (BigUint, BigUint)
+where F : Fn(u32) -> u32 {
+    continuous_fraction_approx_rec(level, p_vals, (0.to_biguint().unwrap(),1.to_biguint().unwrap()), base)
+}
+
+fn continuous_fraction_approx_rec<F>(level : u32, p_vals : F, result :  (BigUint, BigUint), base : BigUint) -> (BigUint, BigUint)
+where F : Fn(u32) -> u32 {
+    if level > 1 {
+	let den = result.1.clone();
+	let num = result.1.clone() * p_vals(level) + result.0;
+	continuous_fraction_approx_rec(level-1, p_vals, (den, num), base) }
+    else {
+	(result.0 + base*result.1.clone(), result.1) }
+}
+
