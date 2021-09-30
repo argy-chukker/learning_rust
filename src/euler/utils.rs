@@ -416,3 +416,6 @@ where F : Fn(u32) -> u32 {
 	(result.0 + base*result.1.clone(), result.1) }
 }
 
+pub fn combinations_n<T : NumCast + Unsigned + std::cmp::PartialEq + Copy> (n : T, k : T) -> T {
+    factorial(n) / (factorial(k) * factorial(n-k))
+}
