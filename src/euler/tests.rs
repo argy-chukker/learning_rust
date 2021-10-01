@@ -161,6 +161,12 @@ fn hint_test_problem_50_solver() {
 }
 
 #[test]
+fn hint_test_problem_57_solver() {
+    let attempt = euler_problems::problem_57_solver(8);
+    assert_eq!(attempt, 1);
+}
+
+#[test]
 fn hint_test_problem_65_solver() {
     let attempt = euler_problems::problem_65_solver(10);
     assert_eq!(attempt, 17);
