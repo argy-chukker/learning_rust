@@ -134,10 +134,6 @@ pub fn factorize<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd>(n : T) ->
     result
 }
 
-pub fn is_prime<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd>(n : T) -> bool {
-    n == factorize(n)[0]
-}
-
 pub fn simplify_fraction<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd + std::fmt::Debug>(num : T, dem : T) -> (T, T) {
 
     let d_factors : Vec<T> = factorize(NumCast::from(dem).unwrap());
@@ -418,4 +414,27 @@ where F : Fn(u32) -> u32 {
 
 pub fn combinations_n<T : NumCast + Unsigned + std::cmp::PartialEq + Copy> (n : T, k : T) -> T {
     factorial(n) / (factorial(k) * factorial(n-k))
+}
+
+pub fn is_prime<T : Unsigned + NumCast + Copy + std::cmp::PartialOrd>(n : T) -> bool {
+    let n0 : T = NumCast::from(0).unwrap();
+    let n2 : T = NumCast::from(2).unwrap();
+    let n3 : T = NumCast::from(3).unwrap();
+    let n5 : T = NumCast::from(5).unwrap();
+    let n6 : T = NumCast::from(6).unwrap();
+
+    if (n == n2) || (n == n3) {
+	true
+    } else if (n % n2 == n0) || (n % n3 == n0) {
+	false
+    } else {
+	let mut i = n5;
+	while (i * i) <= n {
+	    if (n % i) == n0 || (n % (i + n2) == n0) {
+		return false
+	    };
+	    i = i + n6;
+	};
+	true
+    }
 }
