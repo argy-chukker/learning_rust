@@ -1,6 +1,6 @@
 use crate::euler::euler_problems;
 use num_bigint::{BigUint, ToBigUint};
-use std::time::{Duration, SystemTime};
+use std::time::SystemTime;
 
 
 pub fn benchmark() -> () {
