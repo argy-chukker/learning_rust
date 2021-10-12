@@ -1,5 +1,7 @@
 pub mod euler;
+pub mod abbey;
 
+pub use crate::abbey::abbey_problems;
 pub use crate::euler::euler_problems;
 pub use crate::euler::euler_benchmark;
 pub use crate::euler::utils;
@@ -11,6 +13,7 @@ fn main() {
 
     match &args[1][..] {
 	"b" => euler_benchmark::benchmark(),
+	"a" => {abbey_problems::abbey_problem_1(args[2..].to_vec()).unwrap();},
 	_ => report_euler_answers(),
     };
 }
