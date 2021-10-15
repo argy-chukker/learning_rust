@@ -1,15 +1,20 @@
 pub fn apply_to_test_cases<T, S, W> (
-    logic : T, std_in : Vec<String>, problem_n : u32)
+    logic : T,
+    std_in : Vec<String>,
+    test_size : usize,
+    problem_n : u32)
       -> Result<Vec<W>, Box<dyn std::error::Error>>
-where T : Fn(S, S) -> W, S : std::str::FromStr, W : std::fmt::Display,
+where T : Fn(Vec<S>) -> W, S : std::str::FromStr + std::clone::Clone, W : std::fmt::Display,
       <S as std::str::FromStr>::Err : 'static + std::error::Error
 {
     let n = std_in[0].parse::<usize>()?;
     let mut results = Vec::new();
 
+    let parsed_input : Vec<S> = std_in.iter().map(|i| i.parse::<S>().unwrap()).collect();
+    
     for i in 0..n {
 	results.push(
-	    logic(std_in[1 + 2*i].parse::<S>()?, std_in[2 + 2*i].parse::<S>()?)
+	    logic(parsed_input[i*test_size..(i+1)*test_size].to_vec())
 	);
     };
 
