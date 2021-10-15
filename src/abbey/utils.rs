@@ -14,7 +14,7 @@ where T : Fn(Vec<S>) -> W, S : std::str::FromStr + std::clone::Clone, W : std::f
     
     for i in 0..n {
 	results.push(
-	    logic(parsed_input[i*test_size..(i+1)*test_size].to_vec())
+	    logic(parsed_input[1+i*test_size..1+(i+1)*test_size].to_vec())
 	);
     };
 
