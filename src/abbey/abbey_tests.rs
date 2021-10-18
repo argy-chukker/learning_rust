@@ -90,3 +90,15 @@ fn abbey_test_poblem_5() -> Result<(), String> {
 	_ => Err(String::from("Test failed"))
     }
 }
+
+#[test]
+fn abbey_test_poblem_6() -> Result<(), String> {
+    let fake_std = parse_fake_std("1 3 5 7 9 11 295 297 299 300 298 296 12 10 8 6 4 2").unwrap();
+
+    let attempt = abbey_problems::abbey_problem_5(fake_std);
+    let expected = (1, 300); 
+    match attempt {
+	Ok(expected) => Ok(()),
+	_ => Err(String::from("Test failed"))
+    }
+}
