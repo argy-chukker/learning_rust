@@ -258,6 +258,11 @@ pub fn benchmark() -> () {
     println!("Problem 50 took {} milli-seconds, and its answer is {}", end_t - begin_t, answer);
 
     let begin_t = timer.elapsed().unwrap().as_millis();
+    let answer = euler_problems::problem_52_solver(None);
+    let end_t = timer.elapsed().unwrap().as_millis();
+    println!("Problem 52 took {} milli-seconds, and its answer is {}", end_t - begin_t, answer);
+
+    let begin_t = timer.elapsed().unwrap().as_millis();
     let answer = euler_problems::problem_53_solver(100, 1000000);
     let end_t = timer.elapsed().unwrap().as_millis();
     println!("Problem 53 took {} milli-seconds, and its answer is {}", end_t - begin_t, answer);
