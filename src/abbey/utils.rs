@@ -27,3 +27,21 @@ where T : Fn(Vec<S>) -> W, S : std::str::FromStr + std::clone::Clone, W : std::f
 
     Ok(results)
 }
+
+pub fn digits<T>(n : T) -> Result<Vec<T>, Box<dyn std::error::Error>> 
+where T : num::NumCast + num::Unsigned {
+    let n_128 : u128 = num::NumCast::from(n).ok_or("Incompatible n")?;
+
+    let digits_n : u128 = (n_128 as f64).log10() as u128;
+
+    let mut digits : Vec<T> = Vec::new();
+
+    let mut div = 1;
+    for _i in 0..=digits_n {
+	let new_digit = (n_128 / div) % 10;
+	let new_digit = num::NumCast::from(new_digit).ok_or("Problem calculating")?;
+	digits.push(new_digit);
+	div *= 10;
+    };
+    Ok(digits)
+}
