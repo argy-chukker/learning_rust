@@ -1,10 +1,9 @@
 use crate::euler::euler_problems;
 
 #[cfg(test)]
-
 #[test]
 fn hint_test_problem_1_solver() {
-    let attempt = euler_problems::problem_1_solver(vec![3,5], 10);
+    let attempt = euler_problems::problem_1_solver(vec![3, 5], 10);
     assert_eq!(attempt, 23);
 }
 
@@ -76,16 +75,12 @@ fn hint_test_problem_17_solver() {
 
 #[test]
 fn hint_test_problem_18_solver() {
-    let attempt = euler_problems::problem_18_solver(
-	Some(
-	    vec![
-		vec![3],
-		vec![7,4],
-		vec![2,4,6],
-		vec![8,5,9,3]
-	    ]
-	)
-    );
+    let attempt = euler_problems::problem_18_solver(Some(vec![
+        vec![3],
+        vec![7, 4],
+        vec![2, 4, 6],
+        vec![8, 5, 9, 3],
+    ]));
     assert_eq!(attempt, 23);
 }
 
