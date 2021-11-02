@@ -206,6 +206,29 @@ fn abbey_test_problem_8() -> Result<(), String> {
 }
 
 #[test]
+fn abbey_test_problem_9() -> Result<(), String> {
+    let fake_std = parse_fake_std(
+        "2
+3 4 5
+1 2 4",
+    )
+    .unwrap();
+
+    let attempt = abbey_problems::abbey_problem_9(fake_std);
+    let expected = vec![1, 0];
+    match attempt {
+        Ok(out) => {
+            if out == expected {
+                Ok(())
+            } else {
+                Err(String::from("Test failed"))
+            }
+        }
+        _ => Err(String::from("Test failed")),
+    }
+}
+
+#[test]
 fn abbey_test_problem_11() -> Result<(), String> {
     let fake_std = parse_fake_std(
         "3
