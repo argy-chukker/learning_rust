@@ -48,5 +48,5 @@ where
         digits.push(new_digit);
         div *= 10;
     }
-    Ok(digits)
+    Ok(digits.into_iter().rev().collect())
 }
