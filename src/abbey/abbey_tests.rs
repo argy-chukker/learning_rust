@@ -298,3 +298,21 @@ my pyx/",
         _ => Err(String::from("Test failed")),
     }
 }
+
+#[test]
+fn abbey_test_problem_32() -> Result<(), String> {
+    let fake_std = parse_fake_std("10 3").unwrap();
+
+    let attempt = abbey_problems::abbey_problem_32(fake_std);
+    let expected = 4_usize;
+    match attempt {
+        Ok(out) => {
+            if out == expected {
+                Ok(())
+            } else {
+                Err(String::from("Test failed"))
+            }
+        }
+        _ => Err(String::from("Test failed")),
+    }
+}
