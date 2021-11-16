@@ -316,3 +316,26 @@ fn abbey_test_problem_32() -> Result<(), String> {
         _ => Err(String::from("Test failed")),
     }
 }
+
+#[test]
+fn abbey_test_problem_47() -> Result<(), String> {
+    let fake_std = parse_fake_std(
+        "2 3
+YHQL YLGL YLFL.
+HYHQ BRX EUXWXV.",
+    )
+    .unwrap();
+
+    let attempt = abbey_problems::abbey_problem_47(fake_std);
+    let expected = "VENI VIDI VICI. EVEN YOU BRUTUS.".to_string();
+    match attempt {
+        Ok(out) => {
+            if out == expected {
+                Ok(())
+            } else {
+                Err(String::from("Test failed"))
+            }
+        }
+        _ => Err(String::from("Test failed")),
+    }
+}

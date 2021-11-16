@@ -50,3 +50,16 @@ where
     }
     Ok(digits.into_iter().rev().collect())
 }
+
+pub fn decode_word(word: &String, k: i8) -> String {
+    let decode_char = |c| {
+        let cn = c as i8 - 65;
+        if cn < 0 {
+            c
+        } else {
+            ((if cn < k { cn - k + 91 } else { cn - k + 65 }) as u8) as char
+        }
+    };
+
+    word.chars().map(decode_char).collect::<String>()
+}
