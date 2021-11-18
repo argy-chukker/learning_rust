@@ -63,3 +63,17 @@ pub fn decode_word(word: &String, k: i8) -> String {
 
     word.chars().map(decode_char).collect::<String>()
 }
+
+pub fn median<T>(values: &mut [T]) -> T
+where
+    T: num::Integer + num::NumCast + Copy,
+{
+    values.sort();
+
+    let len = values.len();
+    if len % 2 == 0 {
+        (values[len / 2 - 1] + values[len / 2]) / num::NumCast::from(2).unwrap()
+    } else {
+        values[len / 2]
+    }
+}
