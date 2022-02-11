@@ -473,3 +473,31 @@ pub fn is_prime<T: Unsigned + NumCast + Copy + std::cmp::PartialOrd>(n: T) -> bo
         true
     }
 }
+
+pub fn reverse(n: u128) -> u128 {
+    let ns = n.to_string();
+    let rev = ns.chars().rev().collect::<String>();
+    rev.parse().unwrap()
+}
+
+pub fn lychrel_n(candidate: u128, top: u32) -> Option<u32> {
+    let mut steps = 1;
+
+    let mut base_number = candidate;
+
+    while steps < top {
+        let mut reverse_n = reverse(base_number);
+
+        let sum = base_number + reverse_n;
+
+        if sum == reverse(sum) {
+            return Some(steps);
+        };
+
+        base_number = sum;
+
+        steps += 1;
+    }
+
+    None
+}
