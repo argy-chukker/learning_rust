@@ -195,7 +195,7 @@ pub fn nth_prime(n: u32) -> u32 {
     candidates[n as usize - 1]
 }
 
-pub fn is_integer(n: f32) -> bool {
+pub fn is_integer<T : num::traits::Float>(n: T) -> bool {
     n.floor() == n
 }
 
@@ -500,4 +500,23 @@ pub fn lychrel_n(candidate: u128, top: u32) -> Option<u32> {
     }
 
     None
+}
+
+
+pub fn gcd<T : Unsigned + std::cmp::PartialEq + Copy>(a : T, b : T) -> T {
+
+    let mut r_2 = a;
+    let mut r_1 = b;
+
+    let mut r_0 = a % b;
+
+    while r_0 != num::Zero::zero() {
+
+	r_2 = r_1;
+	r_1 = r_0;
+	r_0 = r_2 % r_1;
+	
+    };
+    
+    r_1
 }
