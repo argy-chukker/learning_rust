@@ -162,6 +162,15 @@ fn hint_test_problem_51_solver() {
 }
 
 #[test]
+fn hint_test_problem_54_solver() -> Result<(), String> {
+    let attempt = euler_problems::problem_54_solver(true);
+    match attempt {
+        Ok(3) => Ok(()),
+        _ => Err(String::from("Test failed")),
+    }
+}
+
+#[test]
 fn hint_test_problem_57_solver() {
     let attempt = euler_problems::problem_57_solver(8);
     assert_eq!(attempt, 1);
