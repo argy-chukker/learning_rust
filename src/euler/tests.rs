@@ -181,3 +181,13 @@ fn hint_test_problem_65_solver() {
     let attempt = euler_problems::problem_65_solver(10);
     assert_eq!(attempt, 17);
 }
+
+
+#[test]
+fn hint_test_problem_100_solver() {
+    let attempt = euler_problems::problem_100_solver(20);
+    assert_eq!(attempt, 15);
+
+    let attempt = euler_problems::problem_100_solver(22);
+    assert_eq!(attempt, 85);
+}
