@@ -631,3 +631,18 @@ impl PartitionsFunction {
         }
     }
 }
+
+pub fn totient(d : u64, primes_opt : Option<&Vec<u64>>) -> u64 {
+
+    let factors = match primes_opt {
+	Some(primes) => factorize_w_primes(d, &primes),
+	None => factorize_w_primes(d, &primes_below(d.sqrt())),
+    };
+    
+    let mut totient = d;
+    for f in factors {
+	totient /= f;
+	totient *= (f-1);
+    };
+    totient
+}
