@@ -1,6 +1,7 @@
 use itertools::Itertools;
 use num::{traits::Unsigned, NumCast};
-use num_bigint::{BigUint, ToBigUint};
+use num::integer::Roots;
+use num_bigint::{BigUint, ToBigUint, BigInt,ToBigInt};
 use std::collections::HashMap;
 
 pub fn multiples_under(multiples: Vec<u32>, upto: u32) -> Vec<u32> {
@@ -121,15 +122,59 @@ pub fn factorize<T: Unsigned + NumCast + Copy + std::cmp::PartialOrd>(n: T) -> V
     let mut rest = n;
 
     for c in &candidates {
-        if rest % *c == NumCast::from(0).unwrap() {
+        if rest % *c == num::Zero::zero() {
             result.push(*c);
-            while rest % *c == NumCast::from(0).unwrap() {
+            while rest % *c == num::Zero::zero() {
                 rest = rest / *c;
             }
         };
     }
     if result == [] {
         result.push(rest);
+    };
+    result
+}
+
+
+pub fn factorize_w_primes(n: u64, primes : &Vec<u64>) -> Vec<u64> {
+    let candidates  = primes.iter().filter(|p| **p <= n.sqrt());
+    let mut result: Vec<u64> = Vec::new();
+    
+    let mut rest = n;
+
+    for c in candidates {
+        if rest % *c == num::Zero::zero() {
+            result.push(*c);
+            while rest % *c == num::Zero::zero() {
+                rest = rest / *c;
+            }
+        };
+    }
+    if rest > 1 {
+        result.push(rest);
+    };
+    result
+}
+
+
+pub fn factorize_with_exp(n: u128, primes: &Vec<u128>) -> Vec<(u128, u32)> {
+    let candidates = primes.into_iter().filter(|p| p <= &&n);
+    let mut result: Vec<(u128, u32)> = Vec::new();
+
+    let mut rest = n;
+
+    for c in candidates {
+        if rest % *c == num::Zero::zero() {
+            let mut exp = 0;
+            while rest % *c == num::Zero::zero() {
+                rest = rest / *c;
+                exp += 1;
+            }
+            result.push((*c, exp));
+        };
+    }
+    if result == [] {
+        result.push((rest, 1));
     };
     result
 }
@@ -141,27 +186,61 @@ pub fn simplify_fraction<T: Unsigned + NumCast + Copy + std::cmp::PartialOrd + s
     let d_factors: Vec<T> = factorize(NumCast::from(dem).unwrap());
     let n_factors: Vec<T> = factorize(NumCast::from(num).unwrap());
 
+    let mut new_den = d_factors.clone();
+    let mut dem_factors_sized = Vec::<T>::new();
+    let mut demcpy = dem;
+    for f in new_den {
+	while demcpy % f == NumCast::from(0).unwrap() {
+	    dem_factors_sized.push(f);
+	    demcpy = demcpy / f;
+ 	    if f == NumCast::from(1).unwrap() {break;};
+	};
+    };
+
+    let mut new_num = n_factors.clone();
+    let mut num_factors_sized = Vec::<T>::new();
+    let mut numcpy = num;
+    for f in new_num {
+	while numcpy % f == NumCast::from(0).unwrap() {
+	    num_factors_sized.push(f);
+	    numcpy = numcpy / f;
+     	    if f == NumCast::from(1).unwrap() {break;};
+	};
+    };
+
+
+    let d_facts_to_iter = dem_factors_sized.clone();
+    let n_facts_to_iter = num_factors_sized.clone();
+    
+    if dem > num {
+	for f in d_facts_to_iter {
+	    if num_factors_sized.contains(&f) {
+		dem_factors_sized.remove(dem_factors_sized.iter().position(|x| x == &f).expect("needle not found"));
+		num_factors_sized.remove(num_factors_sized.iter().position(|x| x == &f).expect("needle not found"));
+	    };
+	};
+    } else {
+	for f in n_facts_to_iter {
+	    if dem_factors_sized.contains(&f) {
+		dem_factors_sized.remove(dem_factors_sized.iter().position(|x| x == &f).expect("needle not found"));
+		num_factors_sized.remove(num_factors_sized.iter().position(|x| x == &f).expect("needle not found"));
+	    };
+	};
+    };
+
     let res_num: T;
     let res_den: T;
 
-    if d_factors == n_factors {
-        if num > dem {
-            res_num = num / dem;
-            res_den = NumCast::from(1).unwrap();
-        } else {
-            res_den = dem / num;
-            res_num = NumCast::from(1).unwrap();
-        };
-    } else {
-        let mut new_den = d_factors.clone();
-        let mut new_num = n_factors.clone();
-        new_den.retain(|f| !n_factors.contains(&f));
-        res_den = Iterator::reduce(new_den.into_iter(), |x, y| x * y).unwrap();
-
-        new_num.retain(|f| !d_factors.contains(&f));
-        res_num = Iterator::reduce(new_num.into_iter(), |x, y| x * y).unwrap();
+    
+    res_den = match Iterator::reduce(dem_factors_sized.into_iter(), |x, y| x * y) {
+	Some(n) => n,
+	None => NumCast::from(1).unwrap()
     };
-
+    res_num = match Iterator::reduce(num_factors_sized.into_iter(), |x, y| x * y) {
+	Some(n) => n,
+	None => NumCast::from(1).unwrap()
+    };
+    
     (res_num, res_den)
 }
 
@@ -195,7 +274,7 @@ pub fn nth_prime(n: u32) -> u32 {
     candidates[n as usize - 1]
 }
 
-pub fn is_integer<T : num::traits::Float>(n: T) -> bool {
+pub fn is_integer<T: num::traits::Float>(n: T) -> bool {
     n.floor() == n
 }
 
@@ -502,21 +581,53 @@ pub fn lychrel_n(candidate: u128, top: u32) -> Option<u32> {
     None
 }
 
-
-pub fn gcd<T : Unsigned + std::cmp::PartialEq + Copy>(a : T, b : T) -> T {
-
+pub fn gcd<T: Unsigned + std::cmp::PartialEq + Copy>(a: T, b: T) -> T {
     let mut r_2 = a;
     let mut r_1 = b;
 
     let mut r_0 = a % b;
 
     while r_0 != num::Zero::zero() {
+        r_2 = r_1;
+        r_1 = r_0;
+        r_0 = r_2 % r_1;
+    }
 
-	r_2 = r_1;
-	r_1 = r_0;
-	r_0 = r_2 % r_1;
-	
-    };
-    
     r_1
+}
+
+pub struct PartitionsFunction {
+    pub known_values: HashMap<u128, BigUint>,
+}
+
+
+impl PartitionsFunction {
+    pub fn get(&mut self, n: u128) -> BigUint {
+
+        if !self.known_values.contains_key(&n) {
+	    let min_k = - ((24 * n as i128 + 1).sqrt() - 1) / 6 - 1;
+	    let max_k = ((24 * n as i128 + 1).sqrt() + 1) / 6 + 1;
+
+	    let mut res : BigInt = 0u8.to_bigint().unwrap();
+
+	    for k in min_k..=max_k {
+		let new_n = n as i128 - k * (3*k-1) / 2;
+		if new_n as u128 >= n {continue;};
+		if new_n < 0 {continue;};
+		let exponent = (k as i32+1) as u32;
+		res += (-1i128).pow(exponent).to_bigint().unwrap() * self.get(new_n as u128).to_bigint().unwrap();
+	    }
+	self.known_values.insert(n, res.to_biguint().unwrap());
+        }
+	self.known_values.get(&n).unwrap().clone()
+    }
+
+    pub fn new() -> PartitionsFunction {
+	let mut initial_known = HashMap::new();
+	initial_known.insert(1, 1.to_biguint().unwrap());
+	initial_known.insert(0, 1.to_biguint().unwrap());
+        PartitionsFunction {
+            known_values: initial_known,
+        }
+    }
 }
