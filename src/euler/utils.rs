@@ -156,7 +156,7 @@ pub fn factorize_w_primes(n: u64, primes: &Vec<u64>) -> Vec<u64> {
 }
 
 pub fn factorize_with_exp(n: u128, primes: &Vec<u128>) -> Vec<(u128, u32)> {
-    let candidates = primes.into_iter().filter(|p| p <= &&n);
+    let candidates = primes.into_iter().filter(|p| **p <= n.sqrt());
     let mut result: Vec<(u128, u32)> = Vec::new();
 
     let mut rest = n;
@@ -171,7 +171,7 @@ pub fn factorize_with_exp(n: u128, primes: &Vec<u128>) -> Vec<(u128, u32)> {
             result.push((*c, exp));
         };
     }
-    if result == [] {
+    if rest > 1 {
         result.push((rest, 1));
     };
     result
